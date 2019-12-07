@@ -141,6 +141,21 @@ i {
 .btn-roll { top: 403px;}
 .btn-hold { top: 467px;}
 
+input {
+    position: absolute;
+    width: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: Lato;
+    font-size: 20px;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.inp-win { top: 531px; }
+.inp-err { background-color: lightcoral; }
+
 .dice {
     position: absolute;
     left: 50%;

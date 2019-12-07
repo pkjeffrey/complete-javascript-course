@@ -18,7 +18,8 @@ when one of them is a 1.
 
 */
 
-var gameEnded, prevDice, activePlayer, roundScore, playerScores;
+var gameEnded, prevDice, activePlayer, roundScore, playerScores, winningScore;
+const defaultWinningScore = 100;
 
 function init() {
     gameEnded = false;
@@ -26,6 +27,7 @@ function init() {
     activePlayer = 0;
     roundScore = 0;
     playerScores = [0, 0];
+    winningScore = defaultWinningScore;
     document.getElementById('dice').style.display = 'none';
     document.getElementById('score-0').textContent = playerScores[0];
     document.getElementById('score-1').textContent = playerScores[1];
@@ -53,6 +55,18 @@ function switchPlayer() {
 }
 
 init();
+
+document.getElementById('inp-win').addEventListener('keyup', function() {
+    var input = document.getElementById('inp-win');
+    var value = input.value;
+    if (value.length > 0 && (!Number.isInteger(Number(value)) || Number(value) < 1)) {
+        input.classList.add('inp-err');
+        winningScore = defaultWinningScore;
+    } else {
+        input.classList.remove('inp-err');
+        winningScore = Number(value);
+    }
+});
 
 document.querySelector('.btn-new').addEventListener('click', function() {
     init();
@@ -88,7 +102,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     playerScores[activePlayer] += roundScore;
     roundScore = 0;
     updateScores();
-    if (playerScores[activePlayer] >= 100) {
+    if (playerScores[activePlayer] >= winningScore) {
         document.getElementById('name-' + activePlayer).textContent = "Winner!";
         document.getElementById('dice').style.display = 'none';
         document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
