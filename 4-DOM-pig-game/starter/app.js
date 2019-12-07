@@ -7,12 +7,22 @@ GAME RULES:
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 
+CHALLENGE 6:
+Change your game to follow these rules:
+
+- A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn.
+- Add an input field to the HTML where players can set the winning score, so that they can change the
+predefined score of 100.
+- Add another dice to the game, so that there are two dices now. The player losses his current score
+when one of them is a 1.
+
 */
 
-var gameEnded, activePlayer, roundScore, playerScores;
+var gameEnded, prevDice, activePlayer, roundScore, playerScores;
 
 function init() {
     gameEnded = false;
+    prevDice = 0;
     activePlayer = 0;
     roundScore = 0;
     playerScores = [0, 0];
@@ -36,6 +46,7 @@ function rollDice() {
     return Math.floor(Math.random() * 6) + 1;
 }
 function switchPlayer() {
+    prevDice = 0;
     activePlayer = ++activePlayer % 2;
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
@@ -52,19 +63,22 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     if (gameEnded) return;
 
     var value = rollDice();
-
     var dice = document.getElementById('dice');
     dice.style.display = 'block';
     dice.src = 'dice-' + value + '.png';
 
-    if (value !== 1) {
+    if (value === 6 && prevDice === 6) {
+        roundScore = 0;
+        playerScores[activePlayer] = 0;
+        switchPlayer();
+    } else if (value !== 1) {
         roundScore += value;
-        updateScores();
+        prevDice = value;
     } else {
         roundScore = 0;
-        updateScores();
         switchPlayer();
     }
+    updateScores();
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
@@ -74,7 +88,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     playerScores[activePlayer] += roundScore;
     roundScore = 0;
     updateScores();
-    if (playerScores[activePlayer] >= 20) {
+    if (playerScores[activePlayer] >= 100) {
         document.getElementById('name-' + activePlayer).textContent = "Winner!";
         document.getElementById('dice').style.display = 'none';
         document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
