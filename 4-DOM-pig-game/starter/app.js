@@ -18,17 +18,16 @@ when one of them is a 1.
 
 */
 
-var gameEnded, prevDice, activePlayer, roundScore, playerScores, winningScore;
+var gameEnded, activePlayer, roundScore, playerScores, winningScore;
 const defaultWinningScore = 100;
 
 function init() {
     gameEnded = false;
-    prevDice = 0;
     activePlayer = 0;
     roundScore = 0;
     playerScores = [0, 0];
     winningScore = defaultWinningScore;
-    document.getElementById('dice').style.display = 'none';
+    document.getElementById('dices').style.display = 'none';
     document.getElementById('score-0').textContent = playerScores[0];
     document.getElementById('score-1').textContent = playerScores[1];
     document.getElementById('current-0').textContent = roundScore;
@@ -48,7 +47,6 @@ function rollDice() {
     return Math.floor(Math.random() * 6) + 1;
 }
 function switchPlayer() {
-    prevDice = 0;
     activePlayer = ++activePlayer % 2;
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
@@ -68,26 +66,25 @@ document.getElementById('inp-win').addEventListener('keyup', function() {
     }
 });
 
-document.querySelector('.btn-new').addEventListener('click', function() {
-    init();
-    updateScores();
-});
+document.querySelector('.btn-new').addEventListener('click', init);
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if (gameEnded) return;
 
-    var value = rollDice();
-    var dice = document.getElementById('dice');
-    dice.style.display = 'block';
-    dice.src = 'dice-' + value + '.png';
+    var value0 = rollDice();
+    document.getElementById('dice-0').src = 'dice-' + value0 + '.png';
 
-    if (value === 6 && prevDice === 6) {
+    var value1 = rollDice();
+    document.getElementById('dice-1').src = 'dice-' + value1 + '.png';
+
+    document.getElementById('dices').style.display = 'block';
+
+    if (value0 === 6 && value1 === 6) {
         roundScore = 0;
         playerScores[activePlayer] = 0;
         switchPlayer();
-    } else if (value !== 1) {
-        roundScore += value;
-        prevDice = value;
+    } else if (value0 !== 1 && value1 !== 1) {
+        roundScore += (value0 + value1);
     } else {
         roundScore = 0;
         switchPlayer();
@@ -98,13 +95,13 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gameEnded) return;
 
-    document.getElementById('dice').style.display = 'none';
+    document.getElementById('dices').style.display = 'none';
     playerScores[activePlayer] += roundScore;
     roundScore = 0;
     updateScores();
     if (playerScores[activePlayer] >= winningScore) {
         document.getElementById('name-' + activePlayer).textContent = "Winner!";
-        document.getElementById('dice').style.display = 'none';
+        document.getElementById('dices').style.display = 'none';
         document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
         document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
         gameEnded = true;
