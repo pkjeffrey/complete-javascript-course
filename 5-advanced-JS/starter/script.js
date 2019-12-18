@@ -100,7 +100,77 @@
 //     var score = Math.random() * 10;
 //     console.log(score >= 5);
 // })();
-(function (goodLuck) {
-    var score = Math.random() * 10;
-    console.log(score >= 5 - goodLuck);
-})(4);
+// (function (goodLuck) {
+//     var score = Math.random() * 10;
+//     console.log(score >= 5 - goodLuck);
+// })(4);
+
+// Closures
+
+/* Closure:
+   An inner function always has access to
+   the variables and parameters of it's outer
+   function, even after the outer function
+   has returned.
+*/
+
+// function retirement(retirementAge) {
+//     var msg = ' years left until retirement.';
+//     return function(yearOfBirth) {
+//         var age = 2019 - yearOfBirth;
+//         console.log((retirementAge - age) + msg);
+//     }
+// }
+
+// var retirementUS = retirement(66);
+// var retirementGermany = retirement(65);
+// var retirementIceland = retirement(67);
+// retirementUS(1968);
+// retirementGermany(1968);
+// retirementIceland(1968);
+
+// // rewrite interviewQuestion function using closures
+// function interviewQuestion(job) {
+//     return function(name) {
+//         if (job === 'designer') {
+//             console.log(name + ', can you please explain what UX design is?');
+//         } else if (job === 'teacher') {
+//             console.log('What subject do you teach, ' + name + '?');
+//         } else {
+//             console.log('Hello ' + name + ', what do you do?');
+//         }
+//     }
+// }
+
+// var teacherQuestion = interviewQuestion('teacher');
+// teacherQuestion('John');
+
+// interviewQuestion('designer')('Mark');
+
+// Bind, call and apply
+// (methods of functions)
+
+var john = {
+    name: 'John',
+    age: 26,
+    job: 'teacher',
+    presentation: function(style, timeOfDay) {
+        if (style === 'formal') {
+            console.log('Good ' + timeOfDay + ', ladies and gentlement! I\'m ' + this.name + ', I\'m a ' + this.job + ' and I\'m ' + this.age + ' years old.');
+        } else if (style === 'friendly') {
+            console.log('Hey! What\'s up? I\'m ' + this.name + ', I\'m a ' + this.job + ' and I\'m ' + this.age + ' years old. Have a nice ' + timeOfDay + '.');
+        }
+    }
+};
+
+var emily = {
+    name: 'Emily',
+    age: 35,
+    job: 'designer'
+};
+
+john.presentation('friendly', 'afternoon');
+john.presentation.call(emily, 'formal', 'morning');
+john.presentation.apply(emily, ['friendly', 'evening']);
+var emilyFriendly = john.presentation.bind(emily, 'friendly');
+emilyFriendly('night');
