@@ -4,7 +4,7 @@
 //     this.name = name;
 //     this.yearOfBirth = yearOfBirth;
 //     this.job = job;
-//     // this.calculateAge = function() {
+//     // this.calculateAge = function() {          // better to add function to prototype, as per below
 //     //     console.log(2019 - this.yearOfBirth);
 //     // }
 // };
