@@ -38,7 +38,7 @@
     function askQuestion() {
         var q = Math.floor(Math.random() * questions.length);
         questions[q].askQuestion();
-        var guess= prompt('Which is the correct answer?');
+        var guess = prompt('Which is the correct answer?');
         if (guess !== 'exit') {
             updateScore(questions[q].isCorrect(guess));
             askQuestion();
