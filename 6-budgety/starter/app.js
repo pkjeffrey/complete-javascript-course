@@ -12,6 +12,14 @@ var budgetModel = (function() {
         this.value = value;
     };
 
+    var updateTotal = function(type) {
+        var sum = 0;
+        data.items[type].forEach(function(item) {
+            sum += item.value;
+        });
+        data.totals[type] = sum;
+    };
+
     var data = {
         items: {
             inc: [],
@@ -20,7 +28,9 @@ var budgetModel = (function() {
         totals: {
             inc: 0,
             exp: 0
-        }
+        },
+        budget: 0,
+        percentage: undefined
     };
 
     return {
@@ -44,6 +54,26 @@ var budgetModel = (function() {
             }
 
             return newItem;
+        },
+
+        calculateBudget: function() {
+            updateTotal('inc');
+            updateTotal('exp');
+            data.budget = data.totals.inc - data.totals.exp;
+            if (data.totals.inc > 0) {
+                data.percentage = Math.round(data.totals.exp / data.totals.inc * 100);
+            } else {
+                data.percentage = undefined;
+            }
+        },
+
+        getBudget: function() {
+            return {
+                budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                percentage: data.percentage
+            };
         },
 
         testing: function() {
@@ -75,10 +105,20 @@ var uiView = (function() {
 
         getItemInput: function() {
             return {
-                type: document.querySelector(domStrings.input.type).value, // either 'inp' or 'exp'
+                type: document.querySelector(domStrings.input.type).value, // either 'inc' or 'exp'
                 description: document.querySelector(domStrings.input.description).value,
-                value: document.querySelector(domStrings.input.value).value
+                value: parseFloat(document.querySelector(domStrings.input.value).value)
             };
+        },
+
+        clearInputFields: function() {
+            var fields, nodes;
+            nodes = document.querySelectorAll(domStrings.input.description + ', ' + domStrings.input.value);
+            fields = Array.prototype.slice.call(nodes);
+            fields.forEach(function(field) {
+                field.value = '';
+            });
+            fields[0].focus();
         },
 
         addListItem: function(item, type) {
@@ -109,9 +149,18 @@ var controller = (function(budget, ui) {
         var itemInput, budgetItem;
 
         itemInput = ui.getItemInput();
-        budgetItem = budget.addItem(itemInput.type, itemInput.description, itemInput.value);
-        ui.addListItem(budgetItem, itemInput.type);
-        // calculate budget
+        if (itemInput.description !== "" && !isNaN(itemInput.value) && itemInput.value > 0) {
+            budgetItem = budget.addItem(itemInput.type, itemInput.description, itemInput.value);
+            ui.addListItem(budgetItem, itemInput.type);
+            ui.clearInputFields();
+            updateBudget();
+        }
+    };
+
+    var updateBudget = function() {
+        var b;
+        budget.calculateBudget();
+        b = budget.getBudget();
         // update budget to ui
     };
 
