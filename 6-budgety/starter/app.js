@@ -95,6 +95,13 @@ var uiView = (function() {
         lists: {
             income: '.income__list',
             expense: '.expenses__list'
+        },
+        budget: {
+            title: '.budget__title',
+            value: '.budget__value',
+            income: '.budget__income--value',
+            expense: '.budget__expenses--value',
+            percentage: '.budget__expenses--percentage'
         }
     };
 
@@ -138,6 +145,17 @@ var uiView = (function() {
                             .replace('%percentage%', 'TODO%'); //TODO
             
             document.querySelector(listElement).insertAdjacentHTML('beforeend', html);
+        },
+
+        displayBudget: function(budget) {
+            document.querySelector(domStrings.budget.value).textContent = budget.budget;
+            document.querySelector(domStrings.budget.income).textContent = budget.totalInc;
+            document.querySelector(domStrings.budget.expense).textContent = budget.totalExp;
+            if (budget.percentage) {
+                document.querySelector(domStrings.budget.percentage).textContent = budget.percentage + '%';
+            } else {
+                document.querySelector(domStrings.budget.percentage).textContent = '---';
+            }
         }
     };
 })();
@@ -161,7 +179,7 @@ var controller = (function(budget, ui) {
         var b;
         budget.calculateBudget();
         b = budget.getBudget();
-        // update budget to ui
+        ui.displayBudget(b);
     };
 
     var setupEventListeners = function() {
@@ -180,6 +198,7 @@ var controller = (function(budget, ui) {
         init: function() {
             console.log('Application has started.');
             setupEventListeners();
+            ui.displayBudget(budgetModel.getBudget());
         }
     };
 })(budgetModel, uiView);
