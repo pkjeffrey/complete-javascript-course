@@ -93,6 +93,7 @@ var uiView = (function() {
         },
         addButton: '.add__btn',
         lists: {
+            container: '.container',
             income: '.income__list',
             expense: '.expenses__list'
         },
@@ -133,10 +134,10 @@ var uiView = (function() {
             
             if (type === 'inc') {
                 listElement = domStrings.lists.income;
-                htmlTempl = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                htmlTempl = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             } else if (type === 'exp') {
                 listElement = domStrings.lists.expense;
-                htmlTempl = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%percentage%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                htmlTempl = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%percentage%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             }
 
             html = htmlTempl.replace('%id%', item.id)
@@ -175,6 +176,21 @@ var controller = (function(budget, ui) {
         }
     };
 
+    var deleteItem = function(event) {
+        var elemID, itemSplit, itemType, itemID;
+        if (event.target.parentElement.classList.contains('item__delete--btn')) {
+            elemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+            if (elemID) {
+                itemSplit = elemID.split('-');
+                itemType = itemSplit[0];
+                itemID = itemSplit[1];
+                // delete the item from the data structure
+                // delete element from ui
+                // update budget
+            }
+        }
+    };
+
     var updateBudget = function() {
         var b;
         budget.calculateBudget();
@@ -192,6 +208,8 @@ var controller = (function(budget, ui) {
         });
 
         document.querySelector(dom.addButton).addEventListener('click', addItem);
+
+        document.querySelector(dom.lists.container).addEventListener('click', deleteItem);
     };
 
     return {
