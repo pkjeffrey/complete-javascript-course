@@ -47,6 +47,7 @@ console.log(i);
 
 
 // blocks and IIFEs ////////////////////////////////////////////
+/*
 {
     const a = 1;
     let b = 2;
@@ -55,3 +56,135 @@ console.log(i);
 // console.log(a); // fails
 // console.log(b); // fails
 console.log(c);
+*/
+
+
+// strings ///////////////////////////////////////////////////////
+/*
+let firstName = 'John';
+let lastName = 'Smith';
+const yearOfBirth = 1990;
+const calcAge = function(year) {
+    return 2020 - year;
+}
+
+// ES5
+console.log('This is ' + firstName + ' ' + lastName + '. He was born in ' + yearOfBirth + '. Today, he is ' + calcAge(yearOfBirth) + ' years old.');
+
+// ES6
+console.log(`This is ${firstName} ${lastName}. He was born in ${yearOfBirth}. Today, he is ${calcAge(yearOfBirth)} years old.`);
+
+const n = `${firstName} ${lastName}`;
+console.log(n.startsWith('J'));
+console.log(n.endsWith('th'));
+console.log(n.includes(' '));
+console.log(firstName.repeat(5));
+console.log(`${firstName} `.repeat(5));
+*/
+
+
+// arrow functions ////////////////////////////////////////////
+const years = [1990, 1965, 1982, 1937];
+
+// ES5
+var ages5 = years.map(function(el) {
+    return 2020 - el;
+});
+console.log(ages5);
+
+// ES6
+// single argument, single return statement
+let ages6 = years.map(el => 2020 - el);
+console.log(ages6);
+
+// multiple arguments, single return statement
+ages6 = years.map((el, idx) => `Age ${idx + 1}: ${2020 - el}`);
+console.log(ages6);
+
+// multiple arguments, multiple statements
+ages6 = years.map((el, idx) => {
+    const now = new Date().getFullYear();
+    const age = now - el;
+    return `Age element ${idx + 1}: ${age}`;
+});
+console.log(ages6);
+
+// lexical 'this'
+
+// ES5
+// restuls in 'This is box number undefined and it is undefined'
+var box5 = {
+    color: 'green',
+    position: 1,
+    clickMe: function() { // clickMe is method of object, 'this' in method is object
+        document.querySelector('.green').addEventListener('click', function() { // event listener callback is a function, 'this' in function is global
+            var str = 'This is box number ' + this.position + ' and it is ' + this.color;
+            alert(str);
+        })
+    }
+}
+//box5.clickMe();
+
+// restuls in 'This is box number 1 and it is green'
+var box55 = {
+    color: 'green',
+    position: 1,
+    clickMe: function() { // clickMe is method of object, 'this' in method is object
+        var self = this;
+        document.querySelector('.green').addEventListener('click', function() { // event listener callback is a function, 'this' in function is global
+            var str = 'This is box number ' + self.position + ' and it is ' + self.color;
+            alert(str);
+        })
+    }
+}
+//box55.clickMe();
+
+// ES6
+// restuls in 'This is box number 1 and it is green'
+const box6 = {
+    color: 'green',
+    position: 1,
+    clickMe: function() { // clickMe is method of object, 'this' in method is object
+        document.querySelector('.green').addEventListener('click', () => { // arrow function has lexical 'this', being the containing thing - the clickMe method who's 'this' is object
+            var str = 'This is box number ' + this.position + ' and it is ' + this.color;
+            alert(str);
+        })
+    }
+}
+box6.clickMe();
+
+// restuls in 'This is box number undefined and it is undefined'
+const box66 = {
+    color: 'green',
+    position: 1,
+    clickMe: () => { // arrow function has lexical 'this' = global 'this', as not in method
+        document.querySelector('.green').addEventListener('click', () => { // arrow function has lexical 'this' - containing thing is arrow function who's 'this' is global
+            var str = 'This is box number ' + this.position + ' and it is ' + this.color;
+            alert(str);
+        })
+    }
+}
+//box66.clickMe();
+
+
+function Person(name) {
+    this.name = name;
+}
+
+// ES5
+Person.prototype.myFriends5 = function(friends) {
+    var f = friends.map(function(el) {
+        return this.name + ' is friends with ' + el;
+    }.bind(this)); // bind(this) is alternative to var self = this
+    console.log(f);
+}
+
+var friends = ['Bob', 'Jane', 'Mark'];
+new Person('John').myFriends5(friends);
+
+// ES6
+Person.prototype.myFriends6 = function(friends) {
+    const f = friends.map(el => `${this.name} is friends with ${el}`);
+    console.log(f);
+}
+new Person('Mary').myFriends6(friends);
