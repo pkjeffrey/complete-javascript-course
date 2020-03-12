@@ -84,6 +84,7 @@ console.log(`${firstName} `.repeat(5));
 
 
 // arrow functions ////////////////////////////////////////////
+/*
 const years = [1990, 1965, 1982, 1937];
 
 // ES5
@@ -188,3 +189,34 @@ Person.prototype.myFriends6 = function(friends) {
     console.log(f);
 }
 new Person('Mary').myFriends6(friends);
+*/
+
+
+// Destructuring /////////////////////////////////////////////////////
+
+// ES5
+var john = ['John', 26];
+var name5 = john[0];
+var age5 = john[1];
+
+// ES6
+const [name6, year6] = ['John', 26];
+console.log(name6, year6);
+
+const obj = {
+    firstName: 'John',
+    lastName: 'Smith'
+};
+const {firstName, lastName} = obj; // variable names match key names
+console.log(firstName, lastName);
+
+const {firstName: a, lastName: b} = obj; // variable names different from key names
+console.log(a, b);
+
+function calcAgeRetirement(year) {
+    const age = new Date().getFullYear() - year;
+    return [age, 65 - age];
+}
+
+const [age, retirement] = calcAgeRetirement(1990);
+console.log(age, retirement);
