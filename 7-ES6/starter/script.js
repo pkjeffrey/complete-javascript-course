@@ -193,7 +193,7 @@ new Person('Mary').myFriends6(friends);
 
 
 // Destructuring /////////////////////////////////////////////////////
-
+/*
 // ES5
 var john = ['John', 26];
 var name5 = john[0];
@@ -220,3 +220,78 @@ function calcAgeRetirement(year) {
 
 const [age, retirement] = calcAgeRetirement(1990);
 console.log(age, retirement);
+*/
+
+
+// Arrays //////////////////////////////////////////////////////////
+/*
+const boxes = document.querySelectorAll('.box');
+
+// ES5
+var boxesArray5 = Array.prototype.slice.call(boxes);
+boxesArray5.forEach(function(cur) {
+    cur.style.backgroundColor = 'dodgerblue';
+});
+
+// ES6
+const boxesArray6 = Array.from(boxes);
+boxesArray6.forEach(cur => cur.style.backgroundColor = 'orangeRed');
+// or
+Array.from(boxes).forEach(cur => cur.style.backgroundColor = 'dodgerblue');
+
+// ES5
+for(var i = 0; i < boxesArray5.length; i++) {
+    if (boxesArray5[i].className === 'box blue') {
+        continue;
+    }
+    boxesArray5[i].textContent = 'I changed to blue!';
+}
+
+// ES6
+for(const cur of boxesArray6) {
+    if (cur.className.includes('blue')) {
+        continue;
+    }
+    cur.textContent = 'I changed to blue!';
+}
+
+// ES5
+var ages = [12, 17, 8, 21, 14, 11];
+var full5 = ages.map(function(cur) {
+    return cur >= 18;
+});
+console.log(full5.indexOf(true));
+console.log(ages[full5.indexOf(true)]);
+
+// ES6
+console.log(ages.findIndex(cur => cur >= 18));
+console.log(ages.find(cur => cur >= 18));
+*/
+
+
+// spread operator //////////////////////////////////////////
+
+function addFourAges(a, b, c, d) {
+    return a + b + c + d;
+}
+var sum1 = addFourAges(18, 30, 12, 21);
+console.log(sum1);
+
+// ES5
+var ages = [18, 30, 12, 21];
+var sum2 = addFourAges.apply(null, ages);
+console.log(sum2);
+
+// ES6
+const sum3 = addFourAges(...ages); // ... = spread operator
+console.log(sum3);
+
+const familySmith = ['John', 'Jane', 'Mark'];
+const familyMiller = ['Mary', 'Bob', 'Anne'];
+const familyBig = [...familySmith, ...familyMiller];
+console.log(familyBig);
+
+const h = document.querySelector('h1');
+const b = document.querySelectorAll('.box');
+Array.from([h, ...b]).forEach(cur => cur.style.color = 'purple'); // Array.from not neccessary
+[h, ...b].forEach(cur => cur.style.color = 'white');
