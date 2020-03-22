@@ -428,7 +428,7 @@ Person6.greeting();
 
 
 // inheritance ///////////////////////////////////////////
-
+/*
 // ES5
 var Person5 = function(name, yearOfBirth, job) {
     this.name = name;
@@ -475,3 +475,71 @@ class Athlete6 extends Person6 {
     }
 }
 const johnAthlete6 = new Athlete6('John', 1990, 'swimmer', 3, 10);
+*/
+
+
+// CODING CHALLENGE ////////////////////////////////////////////////////////
+/*
+Suppose that you're working in a small town administration, and you're in charge of two town elements:
+1. Parks
+2. Streets
+
+It's a very small town, so right now there are only 3 parks and 4 streets. All parks and streets have a name and a build year.
+
+At an end-of-year meeting, your boss wants a final report with the following:
+1. Tree density of each park in the town (forumla: number of trees/park area)
+2. Average age of each town's park (forumla: sum of all ages/number of parks)
+3. The name of the park that has more than 1000 trees
+4. Total and average length of the town's streets
+5. Size classification of all streets: tiny/small/normal/big/huge. If the size is unknown, the default is normal
+
+All the report data should be printed to the console.
+
+HINT: Use some of the ES6 features: classes, subclasses, template strings, default parameters, maps, arrow functions, destructuring, etc.
+*/
+
+class Element {
+    constructor(name, buildYear) {
+        this.name = name;
+        this.buildYear = buildYear;
+    }
+    age() {
+        return new Date().getFullYear() - this.buildYear;
+    }
+}
+class Park extends Element {
+    constructor(name, buildYear, area, numTrees) {
+        super(name, buildYear);
+        this.area = area;
+        this.numTrees = numTrees;
+    }
+    treeDensity() {
+        return this.numTrees / this.area;
+    }
+}
+class Street extends Element {
+    constructor(name, buildYear, length, size = 'normal') {
+        super(name, buildYear);
+        this.length = length;
+        this.size = size;
+    }
+}
+const parks = [
+    new Park('Green Park', 1988, 0.43, 460),
+    new Park('National Park', 1890, 4.1, 4900),
+    new Park('Oak Park', 1968, 0.38, 900)
+];
+const streets = [
+    new Street('Ocean Avenue', 1990, 1.9, 'big'),
+    new Street('Evergreen Street', 2008, 0.5, 'small'),
+    new Street('4th Street', 2015, 0.9),
+    new Street('Sunset Boulevard', 1982, 3.8, 'huge')
+];
+console.log('----PARKS REPORT----');
+console.log(`Our ${parks.length} parks have an average age of ${parks.map(park => park.age()).reduce((acc, age) => acc + age) / parks.length} years.`);
+parks.forEach(park => console.log(`${park.name} has a tree density of ${park.treeDensity()} trees per square km.`));
+parks.filter(park => park.numTrees > 1000).forEach(park => console.log(`${park.name} has more than 1000 trees.`));
+console.log('----STREETS REPORT----');
+const totalStreetLength = streets.reduce((acc, street) => acc + street.length, 0);
+console.log(`Our ${streets.length} streets have a toal length of ${totalStreetLength} km, with an average of ${totalStreetLength / streets.length} km.`);
+streets.forEach(street => console.log(`${street.name}, built in ${street.buildYear}, is a ${street.size} street.`));
