@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Asynchronous JavaScript</title>
 </head>
+
 <body>
     <h1>Asynchronous JavaScript</h1>
     <script>
@@ -40,26 +42,26 @@
         // getRecipe();
 
         // promises //////////////////////////////////////////
-        const getIds = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve([548,685,714,985]);
-                //reject();
-            }, 1500);
-        });
-        const getRecipe = id => {
-            return new Promise((resolve, reject) => {
-                setTimeout(id => {
-                    resolve({id: id, title: 'Fresh tomato pasta', publisher: 'Jonas'});
-                }, 1500, id);
-            });
-        };
-        const getRelated = pub => {
-            return new Promise((resolve, reject) => {
-                setTimeout(pub => {
-                    resolve({id: 985, title: 'Italian pizza', publisher: 'Jonas'});
-                }, 1500, pub);
-            });
-        };
+        // const getIds = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve([548,685,714,985]);
+        //         //reject();
+        //     }, 1500);
+        // });
+        // const getRecipe = id => {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(id => {
+        //             resolve({id: id, title: 'Fresh tomato pasta', publisher: 'Jonas'});
+        //         }, 1500, id);
+        //     });
+        // };
+        // const getRelated = pub => {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(pub => {
+        //             resolve({id: 985, title: 'Italian pizza', publisher: 'Jonas'});
+        //         }, 1500, pub);
+        //     });
+        // };
 
         // consuming promises with then/catch //////////////
         // getIds
@@ -79,17 +81,56 @@
         //     });
 
         // async/await consuming of promises ////////////////////
-        async function getRecipesAW() {
-            const ids = await getIds;
-            console.log(ids);
-            const recipe = await getRecipe(ids[2]);
-            console.log(recipe);
-            const related = await getRelated(recipe.publisher);
-            console.log(related);
-            // won't return a value - will return a promise for the value
-            return recipe;
-        }
-        getRecipesAW().then(result => console.log(`${result.title} is the best ever!`));
+        // async function getRecipesAW() {
+        //     const ids = await getIds;
+        //     console.log(ids);
+        //     const recipe = await getRecipe(ids[2]);
+        //     console.log(recipe);
+        //     const related = await getRelated(recipe.publisher);
+        //     console.log(related);
+        //     // won't return a value - will return a promise for the value
+        //     return recipe;
+        // }
+        // getRecipesAW().then(result => console.log(`${result.title} is the best ever!`));
+
+        // AJAX with fetch and promises
+        // function getWeather(woeid) {
+        //     fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+        //         .then(result => {
+        //             //console.log(result);
+        //             return result.json();
+        //         })
+        //         .then(data => {
+        //             //console.log(data);
+        //             const today = data.consolidated_weather[0];
+        //             console.log(`Temperatures in ${data.title} for ${today.applicable_date}: Min = ${today.min_temp.toFixed(0)}, Max = ${today.max_temp.toFixed(0)}.`);
+        //         })
+        //         .catch(error => console.log(error));
+        // }
+        // getWeather(1099805); // adelaide
+        // getWeather(44418); // london
+
+        // AJAX with fetch and async/await
+        // async function getWeatherAW(woeid) {
+        //     try {
+        //         const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+        //         const data = await result.json();
+        //         const today = data.consolidated_weather[0];
+        //         console.log(`Temperatures today in ${data.title} for ${today.applicable_date}: Min = ${today.min_temp.toFixed(0)}, Max = ${today.max_temp.toFixed(0)}.`);
+        //         const tomorrow = data.consolidated_weather[1];
+        //         console.log(`Temperatures tomorrow in ${data.title} for ${tomorrow.applicable_date}: Min = ${tomorrow.min_temp.toFixed(0)}, Max = ${tomorrow.max_temp.toFixed(0)}.`);
+        //         return data;
+        //     } catch (error) {
+        //         alert(error);
+        //     }
+        // }
+        // let dataAdelaide;
+        // getWeatherAW(1099805).then(data => {
+        //     dataAdelaide = data;
+        //     console.log(dataAdelaide);
+        // }); // adelaide
+        // getWeatherAW(44418); // london
     </script>
 </body>
+
 </html>
