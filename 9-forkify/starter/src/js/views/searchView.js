@@ -13,10 +13,22 @@ function renderRecipe(recipe) {
                     <img src="${recipe.image_url}" alt="${recipe.title}">
                 </figure>
                 <div class="results__data">
-                    <h4 class="results__name">${recipe.title}</h4>
+                    <h4 class="results__name">${limitRecipeTitle(recipe.title)}</h4>
                     <p class="results__author">${recipe.publisher}</p>
                 </div>
             </a>
         </li>`;
     elements.results.list.insertAdjacentHTML('beforeend', markup);
+}
+
+function limitRecipeTitle(title, limit = 20) {
+    if (title.length > limit) {
+        return title.split(' ').reduce((acc, cur) => {
+            if (acc.length + 1 + cur.length <= limit) {
+                acc += ' ' + cur;
+            }
+            return acc;
+        }, '') + '&hellip;'
+    }
+    return title;
 }
