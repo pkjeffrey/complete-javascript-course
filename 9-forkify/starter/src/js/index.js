@@ -29,3 +29,12 @@ elements.search.form.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
 })
+
+elements.results.pages.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-inline');
+    if (btn) {
+        const goto = parseInt(btn.dataset.goto);
+        searchView.clearRecipes();
+        searchView.renderRecipes(state.search.recipes, goto);
+    }
+})

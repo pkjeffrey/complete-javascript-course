@@ -295,8 +295,7 @@ body {
       clear: both; }
   .results__btn--prev,
   .likes__btn--prev {
-    float: left;
-    flex-direction: row-reverse; }
+    float: left; }
   .results__btn--next,
   .likes__btn--next {
     float: right; }

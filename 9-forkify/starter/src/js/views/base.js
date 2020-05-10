@@ -5,7 +5,8 @@ export const elements = {
     },
     results: {
         results: document.querySelector('.results'),
-        list: document.querySelector('.results__list')
+        list: document.querySelector('.results__list'),
+        pages: document.querySelector('.results__pages')
     }
 }
 
