@@ -1,6 +1,5 @@
-// get:    https://forkify-api.herokuapp.com/api/get?rId=47746
-
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
 import {elements, renderLoader, clearLoader} from './views/base';
 
@@ -12,6 +11,7 @@ import {elements, renderLoader, clearLoader} from './views/base';
  */
 const state = {};
 
+// search controller
 async function controlSearch() {
     const query = searchView.getInput();
     if (query) {
@@ -38,3 +38,23 @@ elements.results.pages.addEventListener('click', e => {
         searchView.renderRecipes(state.search.recipes, goto);
     }
 })
+
+// recipe controller
+async function controlRecipe() {
+    const id = window.location.hash.replace('#', '');
+    if (id) {
+        // prep UI for change
+        state.recipe = new Recipe(id);
+        try {
+            await state.recipe.getRecipe();
+            // render recipe in UI
+            console.log(state.recipe);
+        } catch (error) {
+            alert('Error processing recipe!'); // doesn't alert. exception already caught?
+        }
+    }
+}
+
+['hashchange', 'load'].forEach(
+    event => {window.addEventListener(event, controlRecipe)}
+);
