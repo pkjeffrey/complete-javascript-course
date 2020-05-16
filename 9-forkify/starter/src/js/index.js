@@ -47,6 +47,7 @@ async function controlRecipe() {
         state.recipe = new Recipe(id);
         try {
             await state.recipe.getRecipe();
+            state.recipe.parseIngredients();
             // render recipe in UI
             console.log(state.recipe);
         } catch (error) {
