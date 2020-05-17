@@ -11,6 +11,12 @@ export const renderRecipes = (recipes, page = 1, resultsPerPage = 10) => {
     renderPageButtons(page, recipes.length, resultsPerPage);
 }
 
+export const hightlightSelected = id => {
+    Array.from(document.querySelectorAll('.results__link'))
+         .forEach(result => {result.classList.remove('results__link--active')});
+    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+}
+
 function renderRecipe(recipe) {
     const markup = `
         <li>

@@ -7,6 +7,9 @@ export const elements = {
         results: document.querySelector('.results'),
         list: document.querySelector('.results__list'),
         pages: document.querySelector('.results__pages')
+    },
+    recipe: {
+        details: document.querySelector('.recipe')
     }
 }
 

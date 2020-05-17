@@ -1,6 +1,7 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /**Global state of the app
@@ -43,13 +44,15 @@ elements.results.pages.addEventListener('click', e => {
 async function controlRecipe() {
     const id = window.location.hash.replace('#', '');
     if (id) {
-        // prep UI for change
+        if (state.search) searchView.hightlightSelected(id);
         state.recipe = new Recipe(id);
+        recipeView.clearRecipe();
+        renderLoader(elements.recipe.details);
         try {
             await state.recipe.getRecipe();
             state.recipe.parseIngredients();
-            // render recipe in UI
-            console.log(state.recipe);
+            clearLoader();
+            recipeView.renderRecipe(state.recipe);
         } catch (error) {
             alert('Error processing recipe!'); // doesn't alert. exception already caught?
         }

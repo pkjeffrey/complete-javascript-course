@@ -22,7 +22,7 @@ export default class Recipe {
     }
     calcServings() {
         // assume always 4 servings
-        this.serviings = 4;
+        this.servings = 4;
     }
     calcTime() {
         // assume 15 min for each 3 ingredients
@@ -33,6 +33,7 @@ export default class Recipe {
     parseIngredients() {
         const unitsLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
         const unitsShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
+        const units = [...unitsShort, 'kg', 'g'];
         const newIngredients = this.ingredients.map(el => {
             // uniform units
             let ingredient = el.toLowerCase();
@@ -43,7 +44,7 @@ export default class Recipe {
             ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
             // parse ingredients in to count, unit and ingredient
             const arrIng = ingredient.split(' ');
-            const unitIndx = arrIng.findIndex(part => unitsShort.includes(part));
+            const unitIndx = arrIng.findIndex(part => units.includes(part));
             let objIng;
             if (unitIndx > -1) {
                 objIng = {
