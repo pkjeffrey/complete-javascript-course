@@ -14,7 +14,19 @@ export const renderRecipes = (recipes, page = 1, resultsPerPage = 10) => {
 export const hightlightSelected = id => {
     Array.from(document.querySelectorAll('.results__link'))
          .forEach(result => {result.classList.remove('results__link--active')});
-    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+    document.querySelector(`.results__link[href="#${id}"]`).classList.add('results__link--active');
+}
+
+export function limitRecipeTitle(title, limit = 20) {
+    if (title.length > limit) {
+        return title.split(' ').reduce((acc, cur) => {
+            if (acc.length + 1 + cur.length <= limit) {
+                acc += ' ' + cur;
+            }
+            return acc;
+        }, '') + '&hellip;'
+    }
+    return title;
 }
 
 function renderRecipe(recipe) {
@@ -55,16 +67,4 @@ function renderPageButtons(page, numResults, resultsPerPage) {
             </button>`;
     }
     elements.results.pages.innerHTML = markup;
-}
-
-function limitRecipeTitle(title, limit = 20) {
-    if (title.length > limit) {
-        return title.split(' ').reduce((acc, cur) => {
-            if (acc.length + 1 + cur.length <= limit) {
-                acc += ' ' + cur;
-            }
-            return acc;
-        }, '') + '&hellip;'
-    }
-    return title;
 }

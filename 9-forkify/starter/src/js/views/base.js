@@ -13,6 +13,10 @@ export const elements = {
     },
     shopping: {
         list: document.querySelector('.shopping__list')
+    },
+    likes: {
+        menu: document.querySelector('.likes__field'),
+        list: document.querySelector('.likes__list')
     }
 }
 
