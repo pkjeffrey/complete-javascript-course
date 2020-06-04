@@ -10,6 +10,9 @@ export const elements = {
     },
     recipe: {
         details: document.querySelector('.recipe')
+    },
+    shopping: {
+        list: document.querySelector('.shopping__list')
     }
 }
 

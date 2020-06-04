@@ -3,6 +3,7 @@ import Recipe from './models/Recipe';
 import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /**Global state of the app
@@ -12,6 +13,7 @@ import {elements, renderLoader, clearLoader} from './views/base';
  * - Liked recipes
  */
 const state = {};
+window.state = state; // TODO remove this testing code
 
 // search controller
 async function controlSearch() {
@@ -60,9 +62,19 @@ async function controlRecipe() {
     }
 }
 
+// shopping list controller
+function controlList() {
+    if (!state.list) state.list = new List();
+    state.recipe.ingredients.forEach(ing => {
+        const item = state.list.addItem(ing.count, ing.unit, ing.ingredient);
+        listView.renderItem(item);
+    });
+}
+
 ['hashchange', 'load'].forEach(
     event => {window.addEventListener(event, controlRecipe)}
 );
+// handle recipe button clicks
 elements.recipe.details.addEventListener('click', e => {
     if (e.target.matches('.btn-decrease, .btn-decrease *')) {
         if (state.recipe.servings > 1){
@@ -72,7 +84,18 @@ elements.recipe.details.addEventListener('click', e => {
     } else if (e.target.matches('.btn-increase, .btn-increase *')) {
         state.recipe.updateServings('inc');
         recipeView.updateServings(state.recipe);
+    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
     }
 });
-
-window.l = new List();
+// handle shopping list button clicks
+elements.shopping.list.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        state.list.deleteItem(id);
+        listView.deleteItem(id);
+    } else if (e.target.matches('.shopping__count-value')) {
+        const val = parseFloat(e.target.value, 10);
+        state.list.updateCount(id, val);
+    }
+});
